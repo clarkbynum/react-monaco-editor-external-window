@@ -1,26 +1,23 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import CodeEditor from "./CodeEditor";
+import ExternalWindowPortal from "./ExternalWindowPortal";
 
 const App: React.FC = () => {
+  const [isEjected, setEjected] = useState(false);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <button onClick={() => setEjected(!isEjected)}>Toggle Ejected</button>
+      {isEjected ? (
+        <React.Fragment>
+          <ExternalWindowPortal listenForUnload={() => setEjected(false)}>
+            <CodeEditor />
+          </ExternalWindowPortal>
+        </React.Fragment>
+      ) : (
+        <CodeEditor />
+      )}
     </div>
   );
-}
+};
 
 export default App;
